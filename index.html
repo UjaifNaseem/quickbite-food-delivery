@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickBite - Delicious Food, Delivered Fast</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fafafa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* Header Styles */
+    header {
+      background-color: #ffffff;
+      padding: 1.5rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #333;
+    }
+
+    .logo .bite {
+      color: #FF0000;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 2.5rem;
+      align-items: center;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    nav ul li a:hover {
+      color: #FF0000;
+    }
+
+    nav ul li a.active {
+      color: #FF0000;
+    }
+
+    nav ul li a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: #FF0000;
+    }
+
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+      font-size: 1.5rem;
+      color: #333;
+      transition: color 0.3s ease;
+    }
+
+    .cart-icon:hover {
+      color: #FF0000;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: #FF0000;
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 4rem 5%;
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      min-height: 80vh;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: #333;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      color: #666;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+    .order-btn {
+      background-color: #FF0000;
+      color: white;
+      padding: 1rem 2.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: fit-content;
+      box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+    }
+
+    .order-btn:hover {
+      background-color: #CC0000;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+    }
+
+    /* Image Carousel */
+    .image-carousel {
+      position: relative;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      overflow: hidden;
+    }
+
+    .carousel-slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .carousel-slide.active {
+      opacity: 1;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 1rem;
+      z-index: 10;
+    }
+
+    .carousel-btn {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-btn:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+      transform: scale(1.1);
+    }
+
+    /* Popular Restaurants Section */
+    .popular-restaurants {
+      padding: 4rem 5%;
+      max-width: 1400px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .section-heading {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #FF0000;
+      margin-bottom: 3rem;
+      position: relative;
+      display: inline-block;
+    }
+
+    .section-heading::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 4px;
+      background-color: #FF6600;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 968px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .order-btn {
+        margin: 0 auto;
+      }
+
+      nav ul {
+        gap: 1.5rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 1rem 5%;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+      }
+
+      nav ul {
+        gap: 1rem;
+        font-size: 0.85rem;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .carousel-container {
+        height: 350px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      Quick<span class="bite">Bite</span>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#" class="active">Home</a></li>
+        <li><a href="#">Restaurants</a></li>
+        <li><a href="#">Menu</a></li>
+        <li><a href="#">About</a></li>
+        <li>
+          <div class="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-badge">0</span>
+          </div>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1 class="hero-title">Delicious Food,<br>Delivered Fast</h1>
+      <p class="hero-subtitle">Experience the taste of perfection</p>
+      <button class="order-btn">Order Now</button>
+    </div>
+    <div class="image-carousel">
+      <div class="carousel-container">
+        <div class="carousel-slide active">
+          <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=800&h=600&fit=crop" alt="Double Cheeseburger">
+        </div>
+        <div class="carousel-slide">
+          <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&h=600&fit=crop" alt="Pizza">
+        </div>
+        <div class="carousel-slide">
+          <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=600&fit=crop" alt="Pasta">
+        </div>
+      </div>
+      <div class="carousel-nav">
+        <button class="carousel-btn prev-btn" aria-label="Previous">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-btn next-btn" aria-label="Next">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Restaurants Section -->
+  <section class="popular-restaurants">
+    <h2 class="section-heading">Popular Restaurants</h2>
+  </section>
+
+  <script>
+    // Image Carousel Functionality
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const totalSlides = slides.length;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.remove('active');
+        if (i === index) {
+          slide.classList.add('active');
+        }
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+      showSlide(currentSlide);
+    }
+
+    // Carousel Navigation
+    document.querySelector('.next-btn').addEventListener('click', nextSlide);
+    document.querySelector('.prev-btn').addEventListener('click', prevSlide);
+
+    // Auto-play carousel
+    setInterval(nextSlide, 5000);
+
+    // Order Now Button
+    document.querySelector('.order-btn').addEventListener('click', () => {
+      alert('Order Now feature coming soon!');
+    });
+
+    // Cart Icon Click
+    document.querySelector('.cart-icon').addEventListener('click', () => {
+      alert('Your cart is empty. Start adding delicious food!');
+    });
+  </script>
+</body>
+</html>
+
